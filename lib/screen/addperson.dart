@@ -30,15 +30,7 @@ class AddPersonViewState extends State<AddPersonView> {
   void _addPerson() {
     if(_formKey.currentState!.validate()) {
       if(_image == null) {
-        // showDialog(
-        //   context: context,
-        //   builder: (context) {
-        //     return CupertinoAlertDialog(
-        //       title: Text('Error Dialog'),
-        //       content: Text('You should check data'),
-        //     );
-        //   },
-        // );
+
       }else {
         AddPersonArguments mArguments = new AddPersonArguments();
         mArguments.setId(_id);
@@ -94,44 +86,7 @@ class AddPersonViewState extends State<AddPersonView> {
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(26.0),
-        child: AppBar (
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Add person"),
-              SizedBox(width: 20),
-              flag_ble ? StreamBuilder<BluetoothDeviceState>(
-                stream: connectedDevice!.state,
-                initialData: BluetoothDeviceState.connecting,
-                builder: (c, snapshot) {
-                  VoidCallback? onPressed;
-                  switch (snapshot.data) {
-                    case BluetoothDeviceState.connected:
-                      onPressed = () => print('DISCONNECT');
-                      on_off_ble = true;
-                      break;
-                    case BluetoothDeviceState.disconnected:
-                      onPressed = () => print('CONNECT');
-                      on_off_ble = false;
-                      break;
-                    default:
-                      onPressed = () => print('UNKNOWN');
-                      on_off_ble = false;
-                      break;
-                  }
-                  return Icon(
-                    Icons.bluetooth_connected,
-                    color: on_off_ble ? Colors.red : Colors.grey,
-                  );
-                },
-              ) : Icon(
-                Icons.bluetooth_connected,
-                color: Colors.black,
-              ),
-            ],
-          ),
-        ),
+        child: myAppBar('Add person'),
       ),
       body: Form(
         key: _formKey,
@@ -139,7 +94,7 @@ class AddPersonViewState extends State<AddPersonView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TextFormField(
-              style: TextStyle(fontSize: 10),
+              style: TextStyle(fontSize: 15),
               decoration: const InputDecoration(
                 icon: const Icon(Icons.account_circle),
                 hintText: 'Enter ID',
@@ -155,7 +110,7 @@ class AddPersonViewState extends State<AddPersonView> {
               },
             ),
             TextFormField(
-              style: TextStyle(fontSize: 10),
+              style: TextStyle(fontSize: 15),
               decoration: const InputDecoration(
                 icon: const Icon(Icons.person),
                 hintText: 'Enter first name',
@@ -171,7 +126,7 @@ class AddPersonViewState extends State<AddPersonView> {
               },
             ),
             TextFormField(
-              style: TextStyle(fontSize: 10),
+              style: TextStyle(fontSize: 15),
               decoration: const InputDecoration(
                 icon: const Icon(Icons.person),
                 hintText: 'Enter last name',
@@ -187,7 +142,7 @@ class AddPersonViewState extends State<AddPersonView> {
               },
             ),
             TextFormField(
-              style: TextStyle(fontSize: 10),
+              style: TextStyle(fontSize: 15),
               decoration: const InputDecoration(
                 icon: const Icon(Icons.group),
                 hintText: 'Enter group',
@@ -203,7 +158,7 @@ class AddPersonViewState extends State<AddPersonView> {
               },
             ),
             TextFormField(
-              style: TextStyle(fontSize: 10),
+              style: TextStyle(fontSize: 15),
               decoration: const InputDecoration(
                 icon: const Icon(Icons.home),
                 hintText: 'Enter area',
@@ -219,7 +174,7 @@ class AddPersonViewState extends State<AddPersonView> {
               },
             ),
             TextFormField(
-              style: TextStyle(fontSize: 10),
+              style: TextStyle(fontSize: 15),
               decoration: const InputDecoration(
                 icon: const Icon(Icons.work),
                 hintText: 'Enter posistion',

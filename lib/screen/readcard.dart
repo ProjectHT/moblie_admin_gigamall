@@ -28,10 +28,7 @@ class ReadCardViewState extends State<ReadCardView> {
     if(flag_refresh_msg_ble) {
       _card = msg_ble;
       flag_refresh_msg_ble = false;
-      // print('Msg : ' + _card);
-      // print('Length : ' + _card.length.toString());
-      // print(_card[0]);
-      // print(_card[_card.length-3]);
+
       if((_card[0] == '<')&&(_card[_card.length-3] == '>')){
         print(_card);
         if(flag_read) {
@@ -94,10 +91,7 @@ class ReadCardViewState extends State<ReadCardView> {
     widget._timer!.cancel();
     super.deactivate();
   }
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +128,7 @@ class ReadCardViewState extends State<ReadCardView> {
                   }
                   return Icon(
                     Icons.bluetooth_connected,
-                    color: on_off_ble ? Colors.red : Colors.grey,
+                    color: on_off_ble ? Colors.yellow : Colors.grey,
                   );
                 },
               ) : Icon(

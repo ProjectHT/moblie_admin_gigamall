@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:moblie_admin_gigamall/model/ItemPerson.dart';
 import 'package:moblie_admin_gigamall/screen/person.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../main.dart';
 import 'menu.dart';
 
@@ -22,23 +20,41 @@ class ListPersonViewState extends State<ListPersonView> {
 
   void handleListClientFunction(List<Object> parameters) {
     String tmp = parameters[0] as String;
-    if(tmp.isNotEmpty) {
+    if (tmp.isNotEmpty) {
       Map<String, dynamic> buffer = jsonDecode(tmp);
       _modellistperson = ModelListPerson.fromJson(buffer);
       print(_modellistperson!.toJson());
-      setState(() {
-
-      });
+      setState(() {});
     }
   }
 
+  getData() {
+    ModelPerson person = ModelPerson(
+        id: 'id',
+        code: 'code',
+        firstname: 'firstName',
+        lastname: 'lastName',
+        group: 'group',
+        area: 'area',
+        position: 'position',
+        image: 'image');
+    List<ModelPerson> lstPerson = [];
+    for (var i = 0; i < 10; i++) {
+      lstPerson.add(person);
+    }
+    setState(() {
+      _modellistperson = ModelListPerson(persons: lstPerson);
+    });
+  }
+
   Widget _myListView(BuildContext context) {
-    if(_modellistperson == null) {
+    if (_modellistperson == null) {
       return Center(
         child: Container(
           child: GestureDetector(
-            onTap: (){
-              Navigator.popUntil(context, ModalRoute.withName(MenuView.routeName));
+            onTap: () {
+              Navigator.popUntil(
+                  context, ModalRoute.withName(MenuView.routeName));
             },
             child: Icon(
               Icons.apps,
@@ -56,34 +72,71 @@ class ListPersonViewState extends State<ListPersonView> {
             child: InkWell(
               onTap: () {
                 print(_modellistperson!.persons[index].id);
-                Navigator.pushNamed(context,
+                Navigator.pushNamed(
+                  context,
                   PersonView.routeName,
                   arguments: _modellistperson!.persons[index],
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: NetworkImage('https://node2.stvg.vn:51002/api/Image/' + _modellistperson!.persons[index].image),
-                      backgroundColor: Colors.transparent,
+                    Container(
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            'https://node2.stvg.vn:51002/api/Image/' +
+                                _modellistperson!.persons[index].image),
+                        backgroundColor: Colors.transparent,
+                      ),
                     ),
-                    SizedBox(width: 20,),
-                    Column(
-                      children: <Widget>[
-                        Text(_modellistperson!.persons[index].id),
-                        Text(_modellistperson!.persons[index].firstname + " " + _modellistperson!.persons[index].lastname),
-                      ],
-                    ),
-                    SizedBox(width: 20,),
-                    Column(
-                      children: <Widget>[
-                        Text(_modellistperson!.persons[index].position),
-                        Text( _modellistperson!.persons[index].group),
-                        Text(_modellistperson!.persons[index].area),
-                      ],
-                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    _modellistperson!.persons[index].id,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Text(
+                                    _modellistperson!.persons[index].firstname +
+                                        " " +
+                                        _modellistperson!
+                                            .persons[index].lastname,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 5),
+                              // decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 1)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    _modellistperson!.persons[index].position,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Text(
+                                    _modellistperson!.persons[index].group,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Text(
+                                    _modellistperson!.persons[index].area,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]),
+                    )
                   ],
                 ),
               ),
@@ -97,12 +150,12 @@ class ListPersonViewState extends State<ListPersonView> {
   @override
   void initState() {
     super.initState();
-    hubConnection.on('ListClient',(arguments) => handleListClientFunction(arguments!));
-    if(flag_connection) {
-      hubConnection.invoke('ListClient',args: <Object>[
-
-      ]);
-    }
+    // hubConnection.on(
+    //     'ListClient', (arguments) => handleListClientFunction(arguments!));
+    // if (flag_connection) {
+    //   hubConnection.invoke('ListClient', args: <Object>[]);
+    // }
+    getData();
   }
 
   @override
@@ -112,59 +165,19 @@ class ListPersonViewState extends State<ListPersonView> {
     super.deactivate();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(26.0),
-        child: AppBar (
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Read card'),
-              SizedBox(width: 20),
-              flag_ble ? StreamBuilder<BluetoothDeviceState>(
-                stream: connectedDevice!.state,
-                initialData: BluetoothDeviceState.connecting,
-                builder: (c, snapshot) {
-                  VoidCallback? onPressed;
-                  switch (snapshot.data) {
-                    case BluetoothDeviceState.connected:
-                      onPressed = () => print('DISCONNECT');
-                      on_off_ble = true;
-                      break;
-                    case BluetoothDeviceState.disconnected:
-                      onPressed = () => print('CONNECT');
-                      on_off_ble = false;
-                      break;
-                    default:
-                      onPressed = () => print('UNKNOWN');
-                      on_off_ble = false;
-                      break;
-                  }
-                  return Icon(
-                    Icons.bluetooth_connected,
-                    color: on_off_ble ? Colors.red : Colors.grey,
-                  );
-                },
-              ) : Icon(
-                Icons.bluetooth_connected,
-                color: Colors.black,
-              ),
-            ],
-          ),
-        ),
+        child: myAppBar('List person'),
       ),
       body: _myListView(context),
       floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
-        onPressed: (){
-          if(flag_connection) {
-            hubConnection.invoke('ListClient',args: <Object>[
-
-            ]);
+        onPressed: () {
+          if (flag_connection) {
+            hubConnection.invoke('ListClient', args: <Object>[]);
           }
         },
         tooltip: 'Sync',

@@ -70,44 +70,7 @@ class MenuViewState extends State<MenuView> {
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(26.0),
-        child: AppBar (
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Menu"),
-              SizedBox(width: 20),
-              flag_ble ? StreamBuilder<BluetoothDeviceState>(
-                stream: connectedDevice!.state,
-                initialData: BluetoothDeviceState.connecting,
-                builder: (c, snapshot) {
-                  VoidCallback? onPressed;
-                  switch (snapshot.data) {
-                    case BluetoothDeviceState.connected:
-                      onPressed = () => print('DISCONNECT');
-                      on_off_ble = true;
-                      break;
-                    case BluetoothDeviceState.disconnected:
-                      onPressed = () => print('CONNECT');
-                      on_off_ble = false;
-                      break;
-                    default:
-                      onPressed = () => print('UNKNOWN');
-                      on_off_ble = false;
-                      break;
-                  }
-                  return Icon(
-                    Icons.bluetooth_connected,
-                    color: on_off_ble ? Colors.red : Colors.grey,
-                  );
-                },
-              ) : Icon(
-                Icons.bluetooth_connected,
-                color: Colors.black,
-              ),
-            ],
-          ),
-        ),
+        child: myAppBar('Menu'),
       ),
       body: Center(
         child: Column (
@@ -192,51 +155,7 @@ class MenuViewState extends State<MenuView> {
                 ],
               ),
             ),
-            // flag_ble ? StreamBuilder<BluetoothDeviceState>(
-            //   stream: connectedDevice!.state,
-            //   initialData: BluetoothDeviceState.connecting,
-            //   builder: (c, snapshot) {
-            //     VoidCallback? onPressed;
-            //     switch (snapshot.data) {
-            //       case BluetoothDeviceState.connected:
-            //         onPressed = () => print('DISCONNECT');
-            //         on_off_ble = true;
-            //         break;
-            //       case BluetoothDeviceState.disconnected:
-            //         onPressed = () => print('CONNECT');
-            //         on_off_ble = false;
-            //         break;
-            //       default:
-            //         onPressed = () => print('UNKNOWN');
-            //         on_off_ble = false;
-            //         break;
-            //     }
-            //     // return FlatButton(
-            //     //   onPressed: onPressed,
-            //     //   child: Text(
-            //     //     text,
-            //     //     style: Theme.of(context)
-            //     //         .primaryTextTheme
-            //     //         .button
-            //     //         ?.copyWith(color: Colors.white),
-            //     //   )
-            //     // );
-            //     return Icon(
-            //       Icons.bluetooth_connected,
-            //       color: on_off_ble ? Colors.green : Colors.grey,
-            //     );
-            //   },
-            // ) : SizedBox(height: 10),
-            // // FlatButton(
-            // //   onPressed: null,
-            // //   child: Text(
-            // //   'Test',
-            // //   style: Theme.of(context)
-            // //       .primaryTextTheme
-            // //       .button
-            // //       ?.copyWith(color: Colors.white),
-            // //   )
-            // // ),
+
           ],
         ),
       ),

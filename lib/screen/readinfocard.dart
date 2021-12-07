@@ -117,7 +117,7 @@ class ReadInfoCardViewState extends State<ReadInfoCardView> {
                   }
                   return Icon(
                     Icons.bluetooth_connected,
-                    color: on_off_ble ? Colors.red : Colors.grey,
+                    color: on_off_ble ? Colors.yellow : Colors.grey,
                   );
                 },
               ) : Icon(
