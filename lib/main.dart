@@ -91,10 +91,11 @@ Widget myAppBar (String name) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(name),
-        SizedBox(width: 10),
+        SizedBox(width: 5),
 
       ],
     ),
+
     actions: [ flag_ble ? StreamBuilder<BluetoothDeviceState>(
       stream: connectedDevice!.state,
       initialData: BluetoothDeviceState.connecting,
@@ -155,7 +156,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.green,
       ),
-      initialRoute: ListPersonView.routeName,
+      initialRoute: LoginView.routeName,
       routes: {
         LoginView.routeName : (context) => LoginView(),
         MenuView.routeName : (context) => MenuView(),
@@ -198,7 +199,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _getFromCamera() async {
     XFile? pickedFile = await ImagePicker().pickImage(
         source: ImageSource.camera,
-        maxHeight: MediaQuery.of(context).size.width * .6,
         maxWidth: MediaQuery.of(context).size.width * .6,
         imageQuality: 80,
     ) as XFile?;

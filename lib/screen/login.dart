@@ -107,12 +107,12 @@ class LoginViewState extends State<LoginView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 150.0,
-                  child: Image.network('https://saca.com.vn/vnt_upload/partner/stvg-logo-1.png',
-                    fit: BoxFit.contain,
+                   Center(
+                  child:  Image.asset('assets/images/Smartlook-transparent.png',
+                    width: (MediaQuery.of(context).size.width * 2) / 3, //.network('https://saca.com.vn/vnt_upload/partner/stvg-logo-1.png',
+                    fit: BoxFit.cover),
                   ),
-                ),
+
                 SizedBox(height: 15.0),
                 usernameField,
                 SizedBox(height: 15.0),

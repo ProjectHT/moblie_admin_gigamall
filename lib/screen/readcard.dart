@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -25,15 +24,15 @@ class ReadCardViewState extends State<ReadCardView> {
   bool flag_read = false;
 
   void callbackTimer(Timer timer) {
-    if(flag_refresh_msg_ble) {
+    if (flag_refresh_msg_ble) {
       _card = msg_ble;
       flag_refresh_msg_ble = false;
 
-      if((_card[0] == '<')&&(_card[_card.length-3] == '>')){
+      if ((_card[0] == '<') && (_card[_card.length - 3] == '>')) {
         print(_card);
-        if(flag_read) {
-          if(widget.agrs != null) {
-            if(flag_connection) {
+        if (flag_read) {
+          if (widget.agrs != null) {
+            if (flag_connection) {
               print(_card);
               flag_read = false;
               hubConnection.invoke('CreateClient', args: <Object>[
@@ -52,16 +51,17 @@ class ReadCardViewState extends State<ReadCardView> {
       }
     }
     setState(() {
-      _waittime+=1;
+      _waittime += 1;
     });
   }
 
   void handleCreateClientFunction(List<Object> parameters) {
     String tmp = parameters[0] as String;
     print('SignalR create client : ' + parameters.toString());
-    if(tmp.compareTo('ok') == 0) {
+    if (tmp.compareTo('ok') == 0) {
       flag_connection = true;
-      Navigator.pushReplacementNamed(context, ResultAddPersonView.routeName,arguments: null);
+      Navigator.pushReplacementNamed(context, ResultAddPersonView.routeName,
+          arguments: null);
     } else {
       flag_read = true;
       flag_refresh_msg_ble = false;
@@ -73,14 +73,14 @@ class ReadCardViewState extends State<ReadCardView> {
     super.initState();
     flag_refresh_msg_ble = false;
     flag_read = true;
-    hubConnection.on('CreateClient',(arguments) => handleCreateClientFunction(arguments!));
+    hubConnection.on(
+        'CreateClient', (arguments) => handleCreateClientFunction(arguments!));
     widget._timer = Timer.periodic(Duration(seconds: 1), callbackTimer);
   }
 
   @override
   void dispose() {
     print("Cancel Timer!");
-
 
     super.dispose();
   }
@@ -92,53 +92,55 @@ class ReadCardViewState extends State<ReadCardView> {
     super.deactivate();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    widget.agrs = ModalRoute.of(context)!.settings.arguments as AddPersonArguments;
+    widget.agrs =
+        ModalRoute.of(context)!.settings.arguments as AddPersonArguments;
 
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(26.0),
-        child: AppBar (
+        child: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('Read card'),
-              SizedBox(width: 20),
+              SizedBox(width: 5),
               flag_ble ? StreamBuilder<BluetoothDeviceState>(
-                stream: connectedDevice!.state,
-                initialData: BluetoothDeviceState.connecting,
-                builder: (c, snapshot) {
-                  VoidCallback? onPressed;
-                  switch (snapshot.data) {
-                    case BluetoothDeviceState.connected:
-                      onPressed = () => print('DISCONNECT');
-                      on_off_ble = true;
-                      break;
-                    case BluetoothDeviceState.disconnected:
-                      onPressed = () => print('CONNECT');
-                      on_off_ble = false;
-                      break;
-                    default:
-                      onPressed = () => print('UNKNOWN');
-                      on_off_ble = false;
-                      break;
-                  }
-                  return Icon(
-                    Icons.bluetooth_connected,
-                    color: on_off_ble ? Colors.yellow : Colors.grey,
-                  );
-                },
-              ) : Icon(
-                Icons.bluetooth_connected,
-                color: Colors.black,
-              ),
+
+                      stream: connectedDevice!.state,
+                      initialData: BluetoothDeviceState.connecting,
+                      builder: (c, snapshot) {
+                        VoidCallback? onPressed;
+                        switch (snapshot.data) {
+                          case BluetoothDeviceState.connected:
+                            onPressed = () => print('DISCONNECT');
+                            on_off_ble = true;
+                            break;
+                          case BluetoothDeviceState.disconnected:
+                            onPressed = () => print('CONNECT');
+                            on_off_ble = false;
+                            break;
+                          default:
+                            onPressed = () => print('UNKNOWN');
+                            on_off_ble = false;
+                            break;
+                        }
+                        return Icon(
+                          Icons.bluetooth_connected,
+                          color: on_off_ble ? Colors.yellow : Colors.grey,
+                        );
+                      },
+                    ) : Icon(
+                      Icons.bluetooth_connected,
+                      color: Colors.black,
+                    ),
             ],
           ),
         ),
       ),
+
       body: Center(
         child: Container(
           child: Icon(

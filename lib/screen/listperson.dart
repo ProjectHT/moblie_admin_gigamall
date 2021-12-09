@@ -28,24 +28,24 @@ class ListPersonViewState extends State<ListPersonView> {
     }
   }
 
-  getData() {
-    ModelPerson person = ModelPerson(
-        id: 'id',
-        code: 'code',
-        firstname: 'firstName',
-        lastname: 'lastName',
-        group: 'group',
-        area: 'area',
-        position: 'position',
-        image: 'image');
-    List<ModelPerson> lstPerson = [];
-    for (var i = 0; i < 10; i++) {
-      lstPerson.add(person);
-    }
-    setState(() {
-      _modellistperson = ModelListPerson(persons: lstPerson);
-    });
-  }
+  //getData() {
+    //ModelPerson person = ModelPerson(
+        //id: 'id',
+       // code: 'code',
+       // firstname: 'firstName',
+       // lastname: 'lastName',
+       // group: 'group',
+     //   area: 'area',
+       // position: 'position',
+     //   image: 'image');
+    //List<ModelPerson> lstPerson = [];
+   // for (var i = 0; i < 10; i++) {
+     // lstPerson.add(person);
+   // }
+   // setState(() {
+     // _modellistperson = ModelListPerson(persons: lstPerson);
+  //  });
+//  }
 
   Widget _myListView(BuildContext context) {
     if (_modellistperson == null) {
@@ -97,19 +97,22 @@ class ListPersonViewState extends State<ListPersonView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
+                               width: 160,
+                              //decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 1)),
+
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     _modellistperson!.persons[index].id,
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                   Text(
                                     _modellistperson!.persons[index].firstname +
                                         " " +
                                         _modellistperson!
                                             .persons[index].lastname,
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ],
                               ),
@@ -122,15 +125,15 @@ class ListPersonViewState extends State<ListPersonView> {
                                 children: <Widget>[
                                   Text(
                                     _modellistperson!.persons[index].position,
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                   Text(
                                     _modellistperson!.persons[index].group,
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                   Text(
                                     _modellistperson!.persons[index].area,
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ],
                               ),
@@ -150,12 +153,12 @@ class ListPersonViewState extends State<ListPersonView> {
   @override
   void initState() {
     super.initState();
-    // hubConnection.on(
-    //     'ListClient', (arguments) => handleListClientFunction(arguments!));
-    // if (flag_connection) {
-    //   hubConnection.invoke('ListClient', args: <Object>[]);
-    // }
-    getData();
+     hubConnection.on(
+         'ListClient', (arguments) => handleListClientFunction(arguments!));
+     if (flag_connection) {
+       hubConnection.invoke('ListClient', args: <Object>[]);
+     }
+   // getData();
   }
 
   @override
@@ -175,7 +178,7 @@ class ListPersonViewState extends State<ListPersonView> {
       body: _myListView(context),
       floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
-        onPressed: () {
+            onPressed: () {
           if (flag_connection) {
             hubConnection.invoke('ListClient', args: <Object>[]);
           }

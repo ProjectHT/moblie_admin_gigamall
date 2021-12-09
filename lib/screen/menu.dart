@@ -48,8 +48,7 @@ class MenuViewState extends State<MenuView> {
                     }
                   }
                 });
-              } catch (e) {
-              }
+              } catch (e) {}
             }
           }
         }
